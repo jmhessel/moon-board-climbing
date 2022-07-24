@@ -1,0 +1,21 @@
+Climbset Model                Climb Preprocessing  Grade Preprocessing  Train Acc Test Acc  Within 1  Within 2  
+2016      Random Forest        OneHot               Flanders             0.999     0.366     0.716     0.842     
+2016      Keras LSTM           HoldList             Categorical          0.311     0.299     0.41      0.554     
+2016      Keras MLP            OneHot               Categorical          0.435     0.363     0.717     0.847     
+2016      Random Forest        OneHot               Categorical          0.999     0.165     0.198     0.217     
+2016      Keras LSTM           HoldList             Split                0.631     0.619     1.0       1.0       
+2016      Keras MLP            OneHot               Split                0.843     0.787     1.0       1.0       
+2016      Random Forest        OneHot               Split                1.0       0.77      1.0       1.0       
+2016      Keras LSTM           HoldList             HalfGrade            0.341     0.327     0.622     0.841     
+2016      Keras MLP            OneHot               HalfGrade            0.558     0.476     0.903     0.982     
+2016      Random Forest        OneHot               HalfGrade            0.999     0.197     0.415     0.619     
+2017      Random Forest        OneHot               Flanders             0.997     0.339     0.73      0.841     
+2017      Keras LSTM           HoldList             Categorical          0.232     0.248     0.341     0.478     
+2017      Keras MLP            OneHot               Categorical          0.417     0.352     0.773     0.881     
+2017      Random Forest        OneHot               Categorical          0.996     0.133     0.285     0.372     
+2017      Keras LSTM           HoldList             Split                0.62      0.619     1.0       1.0       
+2017      Keras MLP            OneHot               Split                0.881     0.802     1.0       1.0       
+2017      Random Forest        OneHot               Split                0.999     0.786     1.0       1.0       
+2017      Keras LSTM           HoldList             HalfGrade            0.28      0.293     0.621     0.803     
+2017      Keras MLP            OneHot               HalfGrade            0.565     0.473     0.916     0.988     
+2017      Random Forest        OneHot               HalfGrade            0.997     0.183     0.541     0.719
