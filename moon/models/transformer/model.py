@@ -1,17 +1,17 @@
 import os
 
-import numpy as np
-from keras.layers import LSTM, Dense
-from keras.models import Sequential, load_model
-
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
-
+import json
 
 class Model:
     def name(self):
-        return "Keras LSTM"
+        return "T5"
 
     def train(self, x_train, y_train):
+
+        with open('train.json', 'w') as f:
+            f.write(json.dumps({'x_train': list(x_train), 'y_train': list([int(x) for x in y_train])}))
+        
+        quit()
         num_classes = y_train.shape[1]
         num_climbs = x_train.shape[0]
 

@@ -23,7 +23,7 @@ import pprint
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('binary_instances')
+    parser.add_argument('instances')
 
     parser.add_argument('--t5_model',
                         default='t5-small',
@@ -115,11 +115,23 @@ def main():
     torch.manual_seed(1)
     torch.cuda.manual_seed(1)
 
-    with open(args.binary_instances) as f:
+    with open(args.instances) as f:
         data = json.load(f)
-        train_d, val_d, test_d = data['train'], data['val'], data['test']
 
-    print('train/val/test datapoints: {}/{}/{}'.format(*map(len, [train_d, val_d, test_d])))
+    X = data['train_x']
+    y = data['train_y']
+
+    val_p = .2
+    idxs = np.arange(len(X))
+    np.random.shuffle(idxs)
+    n_val = int(val_p*len(idxs))
+
+    train_d = list(zip([X[cidx] for cidx in idxs[:-n_val]],
+                       [y[cidx] for cidx in idxs[:-n_val]]))
+    val_d = list(zip([X[cidx] for cidx in idxs[-n_val:]],
+                     [y[cidx] for cidx in idxs[-n_val:]]))
+        
+    print('train/val datapoints: {}/{}'.format(*map(len, [train_d, val_d])))
 
     # baseline accuracies...
 
@@ -156,10 +168,6 @@ def main():
 
     val_loader = torch.utils.data.DataLoader(
         val_loader, shuffle=True, collate_fn=data_collator, batch_size=args.batch_size
-    )
-
-    test_loader = torch.utils.data.DataLoader(
-        test_loader, shuffle=False, collate_fn=data_collator, batch_size=args.batch_size
     )
 
     if not args.use_accelerate and torch.cuda.device_count() > 1:
