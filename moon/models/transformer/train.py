@@ -87,6 +87,9 @@ class T5Dataset(torch.utils.data.Dataset):
         self.args = args
 
     def __getitem__(self, idx):
+
+        print(self.data[idx])
+        quit()
         res = self.tokenizer(self.data[idx]['input'], truncation=True, max_length=512)
         res['labels'] = self.tokenizer(self.data[idx]['target']).input_ids
         return res
@@ -118,8 +121,9 @@ def main():
     with open(args.instances) as f:
         data = json.load(f)
 
-    X = data['train_x']
-    y = data['train_y']
+    print(data.keys())
+    X = data['x_train']
+    y = data['y_train']
 
     val_p = .2
     idxs = np.arange(len(X))
@@ -139,19 +143,12 @@ def main():
     accelerator = accelerate.Accelerator(gradient_accumulation_steps=args.gradient_accumulation_steps)
     mainproc = accelerator.is_local_main_process
 
-    n_labels = len(set([d['target'] for d in train_d]))
-    print('{} labels'.format(n_labels))
-
     tokenizer = transformers.T5TokenizerFast.from_pretrained(args.t5_model)
     # get one of the label idxs; used for precision computation if n_labels==2
-    label_idx = [x[0] for x in tokenizer(sorted(list(set([d['target'] for d in train_d])))).input_ids]
-    print('label idxs {}'.format(label_idx))
-    # grab one label idx for computing precision if n_labels = 2
-    label_idx = label_idx[0]
 
-    train_loader, val_loader, test_loader = map(
+    train_loader, val_loader = map(
         lambda x: T5Dataset(x, tokenizer, args),
-        [train_d, val_d, test_d])
+        [train_d, val_d])
 
     model = transformers.T5ForConditionalGeneration.from_pretrained(args.t5_model)
 
