@@ -1,5 +1,6 @@
 import numpy as np
 from keras.preprocessing import sequence
+import tensorflow as tf
 
 
 class OneHotPreprocessor:
@@ -25,4 +26,4 @@ class HoldListPreprocessor:
     def preprocess(self, climbs):
         holds = list(map(self._hold_list, climbs))
         # holds_and_moves = list(map(move_sizes, holds))
-        return sequence.pad_sequences(holds, maxlen=12)
+        return tf.keras.utils.pad_sequences(holds, maxlen=12)
